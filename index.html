@@ -1,0 +1,36 @@
+<html ng-app="FoodApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+      
+    <title>Matvaretabellen</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script>
+     var app = angular.module("FoodApp", []);
+
+app.controller("FoodCtrl", function($scope, $http) {
+  $http.get('foods.json').
+    success(function(data, status, headers, config) {
+      $scope.foods = data;
+    }).
+    error(function(data, status, headers, config) {
+      console.log("Feil");
+    });
+});
+    </script>
+  </head>
+  <body ng-controller="FoodCtrl">
+      Search:<input ng-model="query" type="text"/>
+    <table class="table table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Id</th>
+      </tr>
+      <tr ng-repeat="food in foods | filter:query | orderBy: 'name'">
+        <td>{{food.name}}</td>
+        <td>{{food.id}}</td>
+      </tr>
+    </table>
+  </body>
+</html>
