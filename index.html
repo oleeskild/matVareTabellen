@@ -2,35 +2,52 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-      
-    <title>Matvaretabellen</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+      <title>Matvaretabellen</title>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular-route.min.js"></script>
     <script>
-     var app = angular.module("FoodApp", []);
+        var foodApp = angular.module("FoodApp", ['ngRoute']);
 
-app.controller("FoodCtrl", function($scope, $http) {
-  $http.get('foods.json').
-    success(function(data, status, headers, config) {
-      $scope.foods = data;
-    }).
-    error(function(data, status, headers, config) {
-      console.log("Feil");
-    });
-});
+        foodApp.config(function($routeProvider) {
+        $routeProvider.
+          when('/', {
+            templateUrl: 'food-list.html',
+            controller: 'FoodCtrl'
+          }).
+          when('/:foodName', {
+            templateUrl: 'food-detail.html',
+            controller: 'FoodDetailCtrl'
+          }).
+          otherwise({
+            redirectTo: '/'
+          });
+      });
+        
+        foodApp.controller("FoodCtrl", function($scope, $http) {
+            $http.get('foods.json').
+            success(function(data, status, headers, config) {
+                $scope.foods = data;
+            }).
+            error(function(data, status, headers, config) {
+            console.log("Feil");
+            });
+        });
+        
+        foodApp.controller('FoodDetailCtrl', function ($scope, $routeParams){
+            $scope.name = $routeParams.foodName;
+      });
     </script>
   </head>
-  <body ng-controller="FoodCtrl">
-      Search:<input ng-model="query" type="text"/>
-    <table class="table table-hover">
-      <tr>
-        <th>Name</th>
-        <th>Id</th>
-      </tr>
-      <tr ng-repeat="food in foods | filter:query | orderBy: 'name'">
-        <td>{{food.name}}</td>
-        <td>{{food.id}}</td>
-      </tr>
-    </table>
+  <body>
+      <div ng-view></div>
+     
+      
+      
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
   </body>
 </html>

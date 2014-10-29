@@ -1,0 +1,38 @@
+<div ng-controller="FoodCtrl">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3>Matvaretabellen</h3>
+            </div>
+             <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                  <input type="text" ng-model="query" class="form-control input-lg" placeholder="Søk...">
+            </div>
+          </form>
+        </div>
+          
+         
+      </nav>
+      
+     <!-- <nav class="navbar-form navbar-fixed-top" role="search">
+        <div class="navbar-container">
+            <div class="form-group">
+                <input class="form-control input-lg" type="text" ng-model="query" placeholder="Søk.."/>
+            </div>
+          </div>                                                                                      
+      </nav>-->
+   
+                
+                
+   
+    <table class="table table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Id</th>
+      </tr>
+      <tr ng-repeat="food in foods | filter:query | orderBy: 'name'">
+        <td><a href="#/{{food.name}}">{{food.name}}</a></td>
+        <td>{{food.id}}</td>
+      </tr>
+    </table>
+</div>
